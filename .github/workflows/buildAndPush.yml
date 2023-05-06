@@ -1,10 +1,10 @@
-name: Release
+name: Build And Push
 on:
   push:
     tags: ["v[0-9]+.[0-9]+.[0-9]+"]
+runs-on: ubuntu-22.04
 jobs:
-  build:
-    runs-on: ubuntu-22.04
+  tag:
     steps:
       - uses: actions/checkout@v3
       - name: Registry Login (ghcr.io)
@@ -20,6 +20,9 @@ jobs:
           echo "version_major=$MAJOR" >> $GITHUB_ENV
           echo "version_minor=$MINOR" >> $GITHUB_ENV
           echo "version_patch=$PATCH" >> $GITHUB_ENV
+  build_and_push:
+    steps:
+      - uses: actions/checkout@v3
       - id: string
         uses: ASzc/change-string-case-action@v5
         with:
