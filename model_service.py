@@ -53,7 +53,7 @@ def predict():
 
     res = {
         "result": str(prediction),
-        "text": text
+        "sentiment": text
     }
 
     return jsonify(res)
