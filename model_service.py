@@ -15,7 +15,7 @@ app = Flask(__name__)
 swagger = Swagger(app)
 
 def prepare(text):
-    cv = pickle.load(open('BoW_Sentiment_Model.pkl', "rb"))
+    cv = pickle.load(open('c1_BoW_Sentiment_Model.pkl', "rb"))
     processed_input = cv.transform([text]).toarray()[0]
     return [processed_input]
 
@@ -47,7 +47,7 @@ def predict():
     text = input_data.get('text')
     processed_text = prepare(text)
     
-    model = joblib.load('Classifier_Sentiment_Model')
+    model = joblib.load('c2_Classifier_Sentiment_Model')
 
     prediction = model.predict(processed_text)[0]
 
