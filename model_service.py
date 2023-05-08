@@ -47,7 +47,7 @@ def predict():
     text = input_data.get('text')
     processed_text = prepare(text)
     
-    model = joblib.load('c2_Classifier_Sentiment_Model')
+    model = joblib.load('c2_Classifier_Sentiment_Model.joblib')
 
     prediction = model.predict(processed_text)[0]
 
@@ -59,5 +59,4 @@ def predict():
     return jsonify(res)
 
 if __name__ == '__main__':
-    clf = joblib.load('Classifier_Sentiment_Model')
     app.run(host="0.0.0.0", port=8080, debug=True)
