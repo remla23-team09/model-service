@@ -5,8 +5,8 @@ WORKDIR /root
 COPY requirements.txt /root/
 RUN pip install -r requirements.txt
 
-COPY BoW_Sentiment_Model.pkl /root/
-COPY Classifier_Sentiment_Model /root/
+COPY c1_BoW_Sentiment_Model.pkl /root/
+COPY c2_Classifier_Sentiment_Model.joblib /root/
 COPY model_service.py /root/
 
 EXPOSE 8080
