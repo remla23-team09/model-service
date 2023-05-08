@@ -46,7 +46,7 @@ def predict():
     input_data = request.get_json()
     text = input_data.get('text')
     processed_text = prepare(text)
-    
+
     model = joblib.load('c2_Classifier_Sentiment_Model.joblib')
 
     prediction = model.predict(processed_text)[0]
