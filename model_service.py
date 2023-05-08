@@ -52,8 +52,8 @@ def predict():
     prediction = model.predict(processed_text)[0]
 
     res = {
-        "result": str(prediction),
-        "sentiment": text
+        "prediction": str(prediction),
+        "text": text
     }
 
     return jsonify(res)
