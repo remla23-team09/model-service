@@ -4,7 +4,7 @@ Flask API of the REMLA base_project model.
 #import traceback
 import joblib
 import re
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Response
 from flasgger import Swagger
 import pandas as pd
 from nltk.corpus import stopwords
@@ -14,7 +14,15 @@ import pickle
 app = Flask(__name__)
 swagger = Swagger(app)
 
+
+countTextPreprocess = 0
+countPredictions = 0
+countHappyPredictions = 0
+
 def prepare(text):
+    global countTextPreprocess
+    countTextPreprocess += 1
+
     cv = pickle.load(open('c1_BoW_Sentiment_Model.pkl', "rb"))
     processed_input = cv.transform([text]).toarray()[0]
     return [processed_input]
@@ -43,6 +51,9 @@ def predict():
         description: "The result of the classification: '0' or '1'."
     """
 
+    global countPredictions, countHappyPredictions
+    countPredictions += 1
+
     input_data = request.get_json()
     text = input_data.get('text')
     processed_text = prepare(text)
@@ -56,7 +67,20 @@ def predict():
         "text": text
     }
 
+    if prediction == 1:
+        countHappyPredictions += 1
+
     return jsonify(res)
+
+@app.route('/metrics', methods=['GET'])
+def metrics():
+    global countTextPreprocess, countPredictions, countHappyPredictions
+
+    m+= "num_text_preprocess{{page=\"index\"}} {}\n".format(countTextPreprocess)
+    m+= "num_predictions{{page=\"sub\"}} {}\n".format(countPredictions)
+    m+= "num_happy_predictions{{page=\"sub\"}} {}\n".format(countHappyPredictions)
+
+    return Response(m, mimetype="text/plain")
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8080, debug=True)
