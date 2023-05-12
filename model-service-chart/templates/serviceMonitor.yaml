@@ -7,6 +7,6 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: model-service
+      app: model-service-serv
   endpoints:
   - interval: 5s

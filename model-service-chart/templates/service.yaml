@@ -3,12 +3,11 @@ kind: Service
 metadata:
   name: model-service
   labels:
-    app: model-service
+    app: model-service-serv
 spec:
+  selector:
+    app: model-service
   ports:
   - port: 8080
     protocol: TCP
     name: model-service
-  selector:
-    app: model-service
-  type: LoadBalancer
