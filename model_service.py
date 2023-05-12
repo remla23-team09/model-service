@@ -75,6 +75,13 @@ def predict():
 @app.route('/metrics', methods=['GET'])
 def metrics():
     global countTextPreprocess, countPredictions, countHappyPredictions
+    
+    m = "# HELP num_text_preprocess Number of text preprocess\n"
+    m += "# TYPE num_text_preprocess counter\n"
+    m += "# HELP num_predictions Number of predictions\n"
+    m += "# TYPE num_predictions counter\n"
+    m += "# HELP num_happy_predictions Number of happy predictions\n"
+    m += "# TYPE num_happy_predictions counter\n"
 
     m+= "num_text_preprocess{{page=\"index\"}} {}\n".format(countTextPreprocess)
     m+= "num_predictions{{page=\"sub\"}} {}\n".format(countPredictions)
