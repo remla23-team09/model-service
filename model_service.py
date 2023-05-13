@@ -15,14 +15,11 @@ app = Flask(__name__)
 swagger = Swagger(app)
 
 
-countTextPreprocess = 0
 countPredictions = 0
 countHappyPredictions = 0
+countSadPredictions = 0
 
 def prepare(text):
-    global countTextPreprocess
-    countTextPreprocess += 1
-
     cv = pickle.load(open('c1_BoW_Sentiment_Model.pkl', "rb"))
     processed_input = cv.transform([text]).toarray()[0]
     return [processed_input]
@@ -51,7 +48,7 @@ def predict():
         description: "The result of the classification: '0' or '1'."
     """
 
-    global countPredictions, countHappyPredictions
+    global countPredictions, countHappyPredictions, countSadPredictions
     countPredictions += 1
 
     input_data = request.get_json()
@@ -69,23 +66,25 @@ def predict():
 
     if prediction == 1:
         countHappyPredictions += 1
+    else:
+        countSadPredictions += 1
 
     return jsonify(res)
 
 @app.route('/metrics', methods=['GET'])
 def metrics():
-    global countTextPreprocess, countPredictions, countHappyPredictions
+    global countPredictions, countHappyPredictions, countSadPredictions
     
-    m = "# HELP num_text_preprocess Number of text preprocess\n"
-    m += "# TYPE num_text_preprocess counter\n"
-    m += "# HELP num_predictions Number of predictions\n"
+    m = "# HELP num_predictions Number of predictions\n"
     m += "# TYPE num_predictions counter\n"
     m += "# HELP num_happy_predictions Number of happy predictions\n"
     m += "# TYPE num_happy_predictions counter\n"
+    m += "# HELP num_sad_predictions Number of sad predictions\n"
+    m += "# TYPE num_sad_predictions counter\n"
 
-    m+= "num_text_preprocess{{page=\"index\"}} {}\n".format(countTextPreprocess)
     m+= "num_predictions{{page=\"sub\"}} {}\n".format(countPredictions)
     m+= "num_happy_predictions{{page=\"sub\"}} {}\n".format(countHappyPredictions)
+    m+= "num_sad_predictions{{page=\"sub\"}} {}\n".format(countSadPredictions)
 
     return Response(m, mimetype="text/plain")
 
