@@ -12,10 +12,15 @@ from flasgger import Swagger
 import pickle
 import time
 import sys
-from prometheus_client import Counter, Gauge, Histogram, generate_latest
+from prometheus_client import Counter, Gauge, Histogram, generate_latest, make_wsgi_app
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 app = Flask(__name__)
 swagger = Swagger(app)
+
+app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
+    '/metrics': make_wsgi_app()
+})
 
 happy_predictions = Counter("counter_happy_predictions", "Count the number of happy faces.")
 sad_predictions = Counter("counter_sad_predictions", "Count the number of sad faces.")
@@ -88,23 +93,23 @@ def predict():
 
     return jsonify(res)
 
-@app.route('/metrics', methods=['GET'])
-def metrics():
+# @app.route('/metrics', methods=['GET'])
+# def metrics():
 
-    m = "# HELP happy_predictions Counter for happy predictions output from the model.\n"
-    m += "# TYPE happy_predictions counter\n"
-    m += "happy_predictions{{page=\"happy_predictions\"}} {}\n".format(happy_predictions)
-    m += "# HELP sad_predictions Counter for happy predictions output from the model.\n"
-    m += "# TYPE sad_predictions counter\n"
-    m += "sad_predictions{{page=\"sad_predictions\"}} {}\n".format(sad_predictions)
+#     m = "# HELP happy_predictions Counter for happy predictions output from the model.\n"
+#     m += "# TYPE happy_predictions counter\n"
+#     m += "happy_predictions{{page=\"happy_predictions\"}} {}\n".format(happy_predictions)
+#     m += "# HELP sad_predictions Counter for happy predictions output from the model.\n"
+#     m += "# TYPE sad_predictions counter\n"
+#     m += "sad_predictions{{page=\"sad_predictions\"}} {}\n".format(sad_predictions)
 
-    m += "# HELP prediction_time Gauge for the duration of the prediction.\n"
-    m += "# TYPE prediction_time gauge" + str(prediction_time) + "\n\n"
+#     m += "# HELP prediction_time Gauge for the duration of the prediction.\n"
+#     m += "# TYPE prediction_time gauge" + str(prediction_time) + "\n\n"
 
-    # m += "# HELP size_of_input Historgram with the distribution of the size of input.\n"
-    # m += "# TYPE size_of_input histogram" + str(size_of_input) + "\n\n"
+#     # m += "# HELP size_of_input Historgram with the distribution of the size of input.\n"
+#     # m += "# TYPE size_of_input histogram" + str(size_of_input) + "\n\n"
 
-    return Response(m, mimetype="text/plain")
+#     return Response(m, mimetype="text/plain")
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8080, debug=True)
