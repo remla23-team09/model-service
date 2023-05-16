@@ -91,7 +91,20 @@ def predict():
 @app.route('/metrics', methods=['GET'])
 def metrics():
 
-    return Response(generate_latest(), mimetype="text/plain")
+    m = "# HELP happy_predictions Counter for happy predictions output from the model.\n"
+    m += "# TYPE happy_predictions counter\n"
+    m += "happy_predictions " + str(happy_predictions) + "\n\n"
+    m += "# HELP sad_predictions Counter for happy predictions output from the model.\n"
+    m += "# TYPE sad_predictions counter\n"
+    m += "sad_predictions " + str(sad_predictions) + "\n\n"
+
+    m += "# HELP prediction_time Gauge for the duration of the prediction.\n"
+    m += "# TYPE prediction_time gauge" + str(prediction_time) + "\n\n"
+
+    m += "# HELP size_of_input Historgram with the distribution of the size of input.\n"
+    m += "# TYPE size_of_input histogram" + str(size_of_input) + "\n\n"
+
+    return Response(m, mimetype="text/plain")
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8081, debug=True)
