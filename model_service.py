@@ -93,10 +93,10 @@ def metrics():
 
     m = "# HELP happy_predictions Counter for happy predictions output from the model.\n"
     m += "# TYPE happy_predictions counter\n"
-    m += "happy_predictions " + str(happy_predictions) + "\n\n"
+    m += "happy_predictions{{page=\"happy_predictions\"}} {}\n".format(happy_predictions)
     m += "# HELP sad_predictions Counter for happy predictions output from the model.\n"
     m += "# TYPE sad_predictions counter\n"
-    m += "sad_predictions " + str(sad_predictions) + "\n\n"
+    m += "sad_predictions{{page=\"sad_predictions\"}} {}\n".format(sad_predictions)
 
     m += "# HELP prediction_time Gauge for the duration of the prediction.\n"
     m += "# TYPE prediction_time gauge" + str(prediction_time) + "\n\n"
