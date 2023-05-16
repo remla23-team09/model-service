@@ -101,8 +101,8 @@ def metrics():
     m += "# HELP prediction_time Gauge for the duration of the prediction.\n"
     m += "# TYPE prediction_time gauge" + str(prediction_time) + "\n\n"
 
-    m += "# HELP size_of_input Historgram with the distribution of the size of input.\n"
-    m += "# TYPE size_of_input histogram" + str(size_of_input) + "\n\n"
+    # m += "# HELP size_of_input Historgram with the distribution of the size of input.\n"
+    # m += "# TYPE size_of_input histogram" + str(size_of_input) + "\n\n"
 
     return Response(m, mimetype="text/plain")
 
