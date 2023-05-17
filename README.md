@@ -7,6 +7,11 @@ Contains the wrapper service for the ML model
 - The webservice is containerized and released on GitHub through a workflow.
 - The image is versioned automatically, e.g., through release tags
 
+## Instructions
+### Helm-Chart Installation
+To install the application as a helm chart, run the following command from the root directory of this repository:
+- `helm install <model-service-name> .\model-service-chart\`
+
 # Monitoring
 
 We have introduced 5 domain-specific metrics in our webapp:
