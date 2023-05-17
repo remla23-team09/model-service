@@ -2,7 +2,7 @@
 Flask API of the REMLA base_project model.
 """
 import joblib
-from flask import Flask, jsonify, request, Response
+from flask import Flask, jsonify, request
 from flasgger import Swagger
 import pickle
 import time
@@ -18,9 +18,9 @@ app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
 
 happy_predictions = Counter("counter_happy_predictions", "Count the number of happy faces.")
 sad_predictions = Counter("counter_sad_predictions", "Count the number of sad faces.")
-prediction_time_individual = Gauge("gauge_prediction_time", "Count the duration for different steps.", ["step"])
-size_of_input = Histogram("histogram_size_of_input", "The number of characters in the input.", buckets=[0, 5, 10, 15, 25, 50, 75, 100])
-prediction_time_summary = Summary("summary_prediction_time", "Summarizing duration for different steps", ["step"])
+time_individual = Gauge("gauge_time", "Count the duration for different steps.", ["step"])
+size_of_input = Histogram("histogram_size_of_input", "The number of characters in the input.", buckets=[0, 5, 10, 15, 20, 25, 50, 75, 100])
+time_summary = Summary("summary_time", "Summarizing duration for different steps", ["step"])
 
 def prepare(text):
     cv = pickle.load(open('c1_BoW_Sentiment_Model.pkl', "rb"))
@@ -51,7 +51,7 @@ def predict():
         description: "The result of the classification: '0' or '1'."
     """
 
-    global happy_predictions, sad_predictions, prediction_time_individual, prediction_time_summary, size_of_input
+    global happy_predictions, sad_predictions, time_individual, time_summary, size_of_input
 
     # Process data
     start_time_processing = time.time()
@@ -80,15 +80,15 @@ def predict():
     # Update gauge
     elapsed_time_processing= end_time_processing - start_time_processing
     elapsed_time_prediction= end_time_prediction - start_time_prediction
-    prediction_time_individual.labels("processing").set(elapsed_time_processing)
-    prediction_time_individual.labels("prediction").set(elapsed_time_prediction)
+    time_individual.labels("processing").set(elapsed_time_processing)
+    time_individual.labels("prediction").set(elapsed_time_prediction)
 
     # Update histogram
     size_of_input.observe(len(text))
 
     # Update summary
-    prediction_time_summary.labels("processing").observe(elapsed_time_processing)
-    prediction_time_summary.labels("prediction").observe(elapsed_time_prediction)
+    time_summary.labels("processing").observe(elapsed_time_processing)
+    time_summary.labels("prediction").observe(elapsed_time_prediction)
 
     return jsonify(res)
 
