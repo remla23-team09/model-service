@@ -63,16 +63,16 @@ def predict():
     # Load model and predict
     start_time_prediction = time.time()
     model = joblib.load('c2_Classifier_Sentiment_Model.joblib')
-    prediction = model.predict(processed_text)[0]
+    sentiment = model.predict(processed_text)[0]
     end_time_prediction = time.time()
     
     res = {
-        "prediction": str(prediction),
+        "sentiment": str(sentiment),
         "text": text
     }
 
     # Update counters
-    if prediction == 1:
+    if sentiment == 1:
         happy_predictions.inc()
     else:
         sad_predictions.inc()
@@ -81,14 +81,14 @@ def predict():
     elapsed_time_processing= end_time_processing - start_time_processing
     elapsed_time_prediction= end_time_prediction - start_time_prediction
     time_individual.labels("processing").set(elapsed_time_processing)
-    time_individual.labels("prediction").set(elapsed_time_prediction)
+    time_individual.labels("sentiment").set(elapsed_time_prediction)
 
     # Update histogram
     size_of_input.observe(len(text))
 
     # Update summary
     time_summary.labels("processing").observe(elapsed_time_processing)
-    time_summary.labels("prediction").observe(elapsed_time_prediction)
+    time_summary.labels("sentiment").observe(elapsed_time_prediction)
 
     return jsonify(res)
 
