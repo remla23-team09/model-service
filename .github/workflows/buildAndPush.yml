@@ -2,7 +2,7 @@ name: Build And Push
 run-name: Build & Push model-service by @${{ github.actor }}
 on:
   push:
-    tags: ["v[0-9]+.[0-9]+.[0-9]+"]
+    tags: ['v[0-9]+.[0-9]+.[0-9]+-*']
 jobs:
   job_1:
     name: Build & Push
