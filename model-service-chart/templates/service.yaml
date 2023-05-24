@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: model-service
   labels:
-    app: model-service-serv
+    app: model-service
+    service: model-service
 spec:
   selector:
     app: model-service
   ports:
   - port: 8080
-    protocol: TCP
-    name: model-service
+    name: tcp-modelservice
