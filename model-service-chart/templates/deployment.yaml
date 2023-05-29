@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: model-service
-        image: ghcr.io/remla23-team09/model-service:latest
+        image: ghcr.io/remla23-team09/model-service:{{ .Values.model_service_v1.MODEL_VERSION }}
         ports:
           - containerPort: 8080
         resources:
@@ -45,7 +45,7 @@ spec:
     spec:
       containers:
       - name: model-service
-        image: ghcr.io/remla23-team09/model-service:latest
+        image: ghcr.io/remla23-team09/model-service:{{ .Values.model_service_v2.MODEL_VERSION }}
         ports:
           - containerPort: 8080
         resources:
