@@ -22,6 +22,7 @@ jobs:
           echo "version_major=$MAJOR" >> $GITHUB_ENV
           echo "version_minor=$MINOR" >> $GITHUB_ENV
           echo "version_patch=$PATCH" >> $GITHUB_ENV
+          echo "old_version=${MAJOR}.${MINOR}.$(( ${PATCH} - 1 ))" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - id: string
         uses: ASzc/change-string-case-action@v5
