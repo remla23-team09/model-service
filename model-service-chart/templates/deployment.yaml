@@ -1,22 +1,51 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: model-service
-  labels:
-    app: model-service
+  name: model-service-v1
+  labels: {app: model-service, version: v1}
 spec:
   replicas: 1
   selector:
-    matchLabels:
-      app: model-service
+    matchLabels: {app: model-service, version: v1}
   template:
     metadata:
-      labels:
-        app: model-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+      labels: {app: model-service, version: v1}
     spec:
       containers:
       - name: model-service
-        image: ghcr.io/remla23-team09/model-service:latest
+        image: ghcr.io/remla23-team09/model-service:{{ .Values.model_service_v1.MODEL_VERSION }}
+        ports:
+          - containerPort: 8080
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: model-service-v2
+  labels: {app: model-service, version: v2}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: model-service, version: v2}
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+      labels: {app: model-service, version: v2}
+    spec:
+      containers:
+      - name: model-service
+        image: ghcr.io/remla23-team09/model-service:{{ .Values.model_service_v2.MODEL_VERSION }}
         ports:
           - containerPort: 8080
         resources:
