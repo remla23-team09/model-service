@@ -1,0 +1,4 @@
+model_service_v1:
+  MODEL_VERSION: 0.0.22
+model_service_v2:
+  MODEL_VERSION: ''
