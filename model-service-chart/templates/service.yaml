@@ -1,13 +1,31 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: model-service
+  name: model-service-v1-service
   labels:
-    app: model-service
+    app: model-service 
+    version: v1
     service: model-service
 spec:
   selector:
     app: model-service
+    version: v1
+  ports:
+  - port: 8080
+    name: tcp-modelservice
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: model-service-v2-service
+  labels:
+    app: model-service 
+    version: v2
+    service: model-service
+spec:
+  selector:
+    app: model-service
+    version: v2
   ports:
   - port: 8080
     name: tcp-modelservice

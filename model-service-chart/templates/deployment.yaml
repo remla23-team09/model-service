@@ -15,7 +15,7 @@ spec:
       labels: {app: model-service, version: v1}
     spec:
       containers:
-      - name: model-service
+      - name: model-service-v1
         image: ghcr.io/remla23-team09/model-service:{{ .Values.model_service_v1.MODEL_VERSION }}
         ports:
           - containerPort: 8080
@@ -44,7 +44,7 @@ spec:
       labels: {app: model-service, version: v2}
     spec:
       containers:
-      - name: model-service
+      - name: model-service-v2
         image: ghcr.io/remla23-team09/model-service:{{ .Values.model_service_v2.MODEL_VERSION }}
         ports:
           - containerPort: 8080
