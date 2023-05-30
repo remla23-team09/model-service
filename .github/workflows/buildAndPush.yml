@@ -37,6 +37,7 @@ jobs:
           string: ${{ github.repository }}
       - name: Run DVC pipeline
         run: |
+          ls
           cd model-training
           dvc repro
       - name: Push to DVC Repo
