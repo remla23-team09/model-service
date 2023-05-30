@@ -37,6 +37,7 @@ jobs:
       - name: Run DVC pipeline
         working-directory: /home/runner/work/model-service/model-service/model-training
         run: |
+          ls
           dvc repro
       - name: Push to DVC Repo
         working-directory: /home/runner/work/model-service/model-service/model-training
