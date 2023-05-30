@@ -8,11 +8,13 @@ jobs:
     name: Build & Push
     runs-on: ubuntu-22.04
     steps:
+      - name: Checkout model-service repo
+        uses: actions/checkout@v3
       - name: Checkout model-training repo
         uses: actions/checkout@v3
         with:
           repository: remla23-team09/model-training
-          path: model-training
+          path: ./model-training
       - name: Download DVC
         run: pip install dvc
       - name: Registry Login (ghcr.io)
@@ -35,25 +37,13 @@ jobs:
           string: ${{ github.repository }}
       - name: Run DVC pipeline
         run: |
-          ls
+          cd model-training
           dvc repro
       - name: Push to DVC Repo
         run: |
           dvc push
-      - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v3
-        with:
-          name: model-service-artifact
-          path: twt_roberta_sentiment_model.pkl
-          retention-days: 1
-      - name: Checkout model-training repo
-        uses: actions/checkout@v3
-        with:
-          path: model-service
-      - name: Download model-service artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: model-service-artifact
+          cp ./twt_roberta_sentiment_model.pkl ../model-service/twt_roberta_sentiment_model.pkl
+          cd ../model-service
       - name: Build and Push Docker Image
         run: |
           IMG=ghcr.io/${{steps.string.outputs.lowercase}}
