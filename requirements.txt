@@ -5,3 +5,5 @@ pandas==1.2.4
 scikit-learn==1.2.2
 nltk==3.6.1
 prometheus_client
+transformers
+torch
