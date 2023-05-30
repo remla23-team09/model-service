@@ -35,15 +35,17 @@ jobs:
         with:
           string: ${{ github.repository }}
       - name: Run DVC pipeline
+        working-directory: /home/runner/work/model-service/model-service/model-training
         run: |
           cd model-training
           dvc repro
       - name: Push to DVC Repo
+        working-directory: /home/runner/work/model-service/model-service/model-training
         run: |
           dvc push
           cp ./twt_roberta_sentiment_model.pkl ../model-service/twt_roberta_sentiment_model.pkl
-          cd ../model-service
       - name: Build and Push Docker Image
+        working-directory: /home/runner/work/model-service/model-service
         run: |
           IMG=ghcr.io/${{steps.string.outputs.lowercase}}
           docker build \
