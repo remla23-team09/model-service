@@ -38,6 +38,7 @@ jobs:
       - name: Run DVC pipeline
         run: |
           cd ..
+          cd ..
           ls
           dvc repro
       - name: Push to DVC Repo
