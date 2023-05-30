@@ -8,7 +8,15 @@ jobs:
     name: Build & Push
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout model-training repo
+        uses: actions/checkout@v3
+        with:
+          repository: remla23-team09/model-training
+          path: model-training
+      - name: Checkout model-service repo
+        uses: actions/checkout@v3
+        with:
+          path: model-service
       - name: Registry Login (ghcr.io)
         run: echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u $.lowercase --password-stdin
       - name: Parse version info from tag
@@ -28,21 +36,17 @@ jobs:
         uses: ASzc/change-string-case-action@v5
         with:
           string: ${{ github.repository }}
-      - name: Update Model Service image version
-        uses: fjogeleit/yaml-update-action@v0.13.0
-        with:
-          valueFile: 'model-service-chart/values.yaml'
-          branch: main
-          token: ${{ secrets.GH_TOKEN }}
-          message: 'Update Model Service image versions in model-service-chart/values.yaml'
-          changes: |
-            {
-              "model_service_v1.MODEL_VERSION": "${{ env.version }}",
-              "model_service_v2.MODEL_VERSION": "${{ env.old_version }}"
-            } 
-      - uses: actions/checkout@v3
+      - name: Run DVC pipeline
+        run: |
+          cd model-training
+          dvc repro
+      - name: Push to DVC Repo
+        run: |
+          dvc push
       - name: Build and Push Docker Image
         run: |
+          cp ./model-training/model/twt_roberta_sentiment_model.pkl ../model-service/
+          cd ../model-service
           IMG=ghcr.io/${{steps.string.outputs.lowercase}}
           docker build \
             --tag $IMG:${{ env.version }} \
