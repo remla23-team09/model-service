@@ -8,3 +8,5 @@ prometheus_client
 dvc
 dvc-gdrive
 dvc_s3
+transformers
+torch
