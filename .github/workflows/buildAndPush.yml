@@ -27,20 +27,15 @@ jobs:
       - id: string
         uses: ASzc/change-string-case-action@v5
         with:
-          string: ${{ github.repository }}
-      - name: Update Model Service image version
-        uses: fjogeleit/yaml-update-action@v0.13.0
+          string: ${{ github.repository }} 
+      - name: Setup AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          valueFile: 'model-service-chart/values.yaml'
-          branch: main
-          token: ${{ secrets.GH_TOKEN }}
-          message: 'Update Model Service image versions in model-service-chart/values.yaml'
-          changes: |
-            {
-              "model_service_v1.MODEL_VERSION": "${{ env.version }}",
-              "model_service_v2.MODEL_VERSION": "${{ env.old_version }}"
-            } 
-      - uses: actions/checkout@v3
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+      - name: Fetch dvc files
+        run: dvc pull
       - name: Build and Push Docker Image
         run: |
           IMG=ghcr.io/${{steps.string.outputs.lowercase}}
