@@ -65,7 +65,7 @@ def predict():
 
     # Load model and predict
     start_time_prediction = time.time()
-    model = pickle.load('twt_roberta_sentiment_model.pkl')
+    model = pickle.load('./models/twt_roberta_model.pkl')
     output = model(**processed_text)
     end_time_prediction = time.time()
 
