@@ -1,7 +1,4 @@
-"""
-Flask API of the REMLA base_project model.
-"""
-import joblib
+import os
 from flask import Flask, jsonify, request
 from flasgger import Swagger
 import pickle
@@ -65,8 +62,8 @@ def predict():
 
     # Load model and predict
     start_time_prediction = time.time()
-
-    with open('./models/twt_roberta_model.pkl', 'rb') as model_file:    
+    
+    with open(os.getcwd() + '/models/twt_roberta_model.pkl', 'rb') as model_file:    
         model = pickle.load(model_file)
     
     output = model(**processed_text)
