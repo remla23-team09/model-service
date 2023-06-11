@@ -18,6 +18,8 @@ jobs:
           path: ./model-training
       - name: Download DVC
         run: pip install dvc
+      - name: Download DVC
+        run: pip install dvc-s3
       - name: Registry Login (ghcr.io)
         run: echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u $.lowercase --password-stdin
       - name: Parse version info from tag
