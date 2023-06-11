@@ -16,10 +16,8 @@ jobs:
           repository: remla23-team09/model-training
           branch: cookiecutter+dvc
           path: ./model-training
-      - name: Download DVC
-        run: pip install dvc
-      - name: Download DVC
-        run: pip install dvc-s3
+      - name: Install Requirements
+        run: pip install -r /home/runner/work/model-service/model-service/requirements.txt
       - name: Registry Login (ghcr.io)
         run: echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u $.lowercase --password-stdin
       - name: Parse version info from tag
