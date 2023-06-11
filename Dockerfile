@@ -19,4 +19,4 @@ COPY model_service.py .
 EXPOSE 8080
 
 ENTRYPOINT ["python"]
-CMD ["model_service_twt_roberta.py"]
+CMD ["model_service_random_forest.py"]
