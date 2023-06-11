@@ -1,0 +1,8 @@
+[core]
+    remote = s3remote
+    autostage = true
+['remote "storage"']
+    url = gdrive://1qGh_mUMGIIi5i8wkU11D6b0Klobgpt7-
+    gdrive_service_account_json_file_path = /home/runner/work/model-training/model-training/gcp-sa-key.json
+['remote "s3remote"']
+    url = s3://remla23-team09-s3bucket/restaurants

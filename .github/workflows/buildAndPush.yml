@@ -6,7 +6,7 @@ on:
 jobs:
   job_1:
     name: Build & Push
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     steps:
       - name: Checkout model-service repo
         uses: actions/checkout@v3
@@ -16,8 +16,6 @@ jobs:
           repository: remla23-team09/model-training
           branch: cookiecutter+dvc
           path: ./model-training
-      - name: Install Requirements
-        run: pip install -r /home/runner/work/model-service/model-service/requirements.txt
       - name: Registry Login (ghcr.io)
         run: echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u $.lowercase --password-stdin
       - name: Parse version info from tag
@@ -43,14 +41,14 @@ jobs:
           aws-region: eu-central-1
       - name: Fetch dvc files in model-training
         run: dvc pull
-        working-directory: /home/runner/work/model-service/model-service/model-training
+        working-directory: /home/krzysztof_garbowicz/_work/model-service/model-service/model-training
       - name: Recreate the models
         run: dvc repro
-        working-directory: /home/runner/work/model-service/model-service/model-training
+        working-directory: /home/krzysztof_garbowicz/_work/model-service/model-service/model-training
       - name: Copy data to model-service
-        run: cp -r /home/runner/work/model-service/model-service/model-training/data /home/runner/work/model-service/model-service/data
+        run: cp -r /home/krzysztof_garbowicz/_work/model-service/model-service/model-training/data /home/runner/work/model-service/model-service/data
       - name: Copy models to model-service
-        run: cp -r /home/runner/work/model-service/model-service/model-training/models /home/runner/work/model-service/model-service/models
+        run: cp -r /home/krzysztof_garbowicz/_work/model-service/model-service/model-training/models /home/runner/work/model-service/model-service/models
       - name: Build and Push Docker Image
         working-directory: /home/runner/work/model-service/model-service
         run: |
