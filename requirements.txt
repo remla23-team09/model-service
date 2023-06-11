@@ -7,6 +7,6 @@ nltk==3.6.1
 prometheus_client
 dvc
 dvc-gdrive
-dvc_s3
+dvc-s3
 transformers
 torch
