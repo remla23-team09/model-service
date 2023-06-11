@@ -19,6 +19,13 @@ time_individual = Gauge("gauge_time", "Count the duration for different steps.",
 size_of_input = Histogram("histogram_size_of_input", "The number of characters in the input.", buckets=[0, 5, 10, 15, 20, 25, 50, 75, 100])
 time_summary = Summary("summary_time", "Summarizing duration for different steps", ["step"])
 
+model = None
+
+with open('./models/random_forest_model.joblib', 'rb') as model_file:   
+        print('loading model') 
+        model = joblib.load(model_file)
+        print('model loaded')
+
 def prepare(text):
     cv = pickle.load(open('c1_BoW_Sentiment_Model.pkl', "rb"))
     processed_input = cv.transform([text]).toarray()[0]
@@ -49,6 +56,7 @@ def predict():
     """
 
     global happy_predictions, sad_predictions, time_individual, time_summary, size_of_input
+    global model
 
     # Process data
     start_time_processing = time.time()
@@ -59,7 +67,6 @@ def predict():
 
     # Load model and predict
     start_time_prediction = time.time()
-    model = joblib.load('./models/random_forest_model.joblib')
     sentiment = model.predict(processed_text)[0]
     end_time_prediction = time.time()
     
