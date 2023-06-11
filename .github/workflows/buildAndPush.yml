@@ -41,8 +41,16 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-central-1
-      - name: Fetch dvc files
+      - name: Fetch dvc files in model-training
         run: dvc pull
+        working-directory: /home/runner/work/model-service/model-service/model-training
+      - name: Recreate the models
+        run: dvc repro
+        working-directory: /home/runner/work/model-service/model-service/model-training
+      - name: Copy data to model-service
+        run: cp -r /home/runner/work/model-service/model-service/model-training/data /home/runner/work/model-service/model-service/data
+      - name: Copy models to model-service
+        run: cp -r /home/runner/work/model-service/model-service/model-training/models /home/runner/work/model-service/model-service/models
       - name: Build and Push Docker Image
         working-directory: /home/runner/work/model-service/model-service
         run: |
