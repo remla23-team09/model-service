@@ -24,6 +24,13 @@ time_summary = Summary("summary_time", "Summarizing duration for different steps
 
 
 tokenizer = AutoTokenizer.from_pretrained('cardiffnlp/twitter-roberta-base-sentiment')
+model = None
+
+with open('./models/twt_roberta_model.pkl', 'rb') as model_file:   
+        print('loading model') 
+        model = pickle.load(model_file)
+        print('model loaded')
+
 def prepare(text):
     return tokenizer(text, return_tensors='pt')
 
@@ -52,6 +59,7 @@ def predict():
     """
 
     global happy_predictions, sad_predictions, time_individual, time_summary, size_of_input
+    global model
 
     # Process data
     start_time_processing = time.time()
@@ -62,10 +70,6 @@ def predict():
 
     # Load model and predict
     start_time_prediction = time.time()
-    
-    with open('./models/twt_roberta_model.pkl', 'rb') as model_file:    
-        model = pickle.load(model_file)
-    
     output = model(**processed_text)
     end_time_prediction = time.time()
 
