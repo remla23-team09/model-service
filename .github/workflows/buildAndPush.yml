@@ -46,9 +46,9 @@ jobs:
         run: dvc repro
         working-directory: /home/krzysztof_garbowicz/actions-runner/_work/model-service/model-service/model-training
       - name: Copy data to model-service
-        run: cp -r /home/krzysztof_garbowicz/actions-runner/_work/model-service/model-service/model-training/data /home/krzysztof_garbowicz/actions-runner/_work/model-service/model-service/data
+        run: cp -r /home/krzysztof_garbowicz/actions-runner/_work/model-service/model-service/model-training/data /home/krzysztof_garbowicz/actions-runner/_work/model-service/model-service/
       - name: Copy models to model-service
-        run: cp -r /home/krzysztof_garbowicz/actions-runner/_work/model-service/model-service/model-training/models /home/krzysztof_garbowicz/actions-runner/_work/model-service/model-service/models
+        run: cp -r /home/krzysztof_garbowicz/actions-runner/_work/model-service/model-service/model-training/models /home/krzysztof_garbowicz/actions-runner/_work/model-service/model-service/
       - name: Build and Push Docker Image
         working-directory: /home/krzysztof_garbowicz/actions-runner/_work/model-service/model-service/
         run: |
