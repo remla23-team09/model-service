@@ -27,11 +27,12 @@ tokenizer = AutoTokenizer.from_pretrained('cardiffnlp/twitter-roberta-base-senti
 model = None
 
 with open('./models/twt_roberta_model.pkl', 'rb') as model_file:   
-        print('loading model') 
-        model = pickle.load(model_file)
-        print('model loaded')
+    app.logger.info('loading twt roberta model...') 
+    model = pickle.load(model_file)
+    app.logger.info('twt roberta model loaded!')
 
 def prepare(text):
+    app.logger.info("preparing input...")
     return tokenizer(text, return_tensors='pt')
 
 @app.route('/predict', methods=['POST'])
@@ -61,15 +62,22 @@ def predict():
     global happy_predictions, sad_predictions, time_individual, time_summary, size_of_input
     global model
 
+    app.logger.info("received request for twt roberta model...")
+
     # Process data
     start_time_processing = time.time()
     input_data = request.get_json()
     text = input_data.get('text')
+
+    app.logger.info("input text: {}".format(text))
+
     processed_text = prepare(text)
     end_time_processing = time.time()
 
     # Load model and predict
     start_time_prediction = time.time()
+    app.logger.info("predicting...")
+
     output = model(**processed_text)
     end_time_prediction = time.time()
 
@@ -103,7 +111,8 @@ def predict():
     # Update summary
     time_summary.labels("processing").observe(elapsed_time_processing)
     time_summary.labels("sentiment").observe(elapsed_time_prediction)
-
+    
+    app.logger.info("prediction done!")
     return jsonify(res)
 
 if __name__ == '__main__':
