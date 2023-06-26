@@ -1,22 +1,18 @@
-FROM python:3.9-slim
+FROM python:3.9-slim as packages
 
 WORKDIR /root
-
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY ./models/twt_roberta_model.pkl ./models/twt_roberta_model.pkl
-COPY model_service_twt_roberta.py .
+FROM packages as data
+COPY ./data/ ./data/
 
-COPY ./models/random_forest_model.joblib ./models/random_forest_model.joblib
-COPY model_service_random_forest.py .
+FROM data as models
+COPY ./models/ ./models/
 
-COPY c1_BoW_Sentiment_Model.pkl .
-COPY c2_Classifier_Sentiment_Model.joblib .
-COPY model_service.py .
-
-
+FROM models as app
+COPY ./src/ ./src/
 EXPOSE 8080
 
-ENTRYPOINT ["python"]
-CMD ["model_service_random_forest.py"]
+WORKDIR /root/src/
+CMD ["python", "interface.py"]

@@ -39,11 +39,11 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-central-1
+      - name: install requirements
+        run: pip install -r requirements.txt
+        working-directory: /home/krzysztof_garbowicz/actions-runner/_work/model-service/model-service
       - name: Fetch dvc files in model-training
         run: dvc pull
-        working-directory: /home/krzysztof_garbowicz/actions-runner/_work/model-service/model-service/model-training
-      - name: Recreate the models
-        run: dvc repro
         working-directory: /home/krzysztof_garbowicz/actions-runner/_work/model-service/model-service/model-training
       - name: Copy data to model-service
         run: cp -r /home/krzysztof_garbowicz/actions-runner/_work/model-service/model-service/model-training/data /home/krzysztof_garbowicz/actions-runner/_work/model-service/model-service/
