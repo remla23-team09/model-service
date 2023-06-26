@@ -31,7 +31,7 @@ spec:
             valueFrom:
               configMapKeyRef:
                 name: model-service-v1-configmap
-                key: MODEL_NAME
+                key: MODEL_NAME_V1
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -66,4 +66,4 @@ spec:
             valueFrom:
               configMapKeyRef:
                 name: model-service-v2-configmap
-                key: MODEL_NAME
+                key: MODEL_NAME_V2

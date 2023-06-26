@@ -3,13 +3,11 @@ kind: ConfigMap
 metadata:
   name: model-service-v1-configmap
 data:
-  SERVICE_IMAGE: {{.Values.model_service_v1.service_image}}
-  MODEL_NAME: {{.Values.model_service_v1.model_name}}
+  MODEL_NAME_V1: {{.Values.model_service_v1.model_name}}
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: model-service-v2-configmap
 data:
-  SERVICE_IMAGE: {{.Values.model_service_v2.service_image}}
-  MODEL_NAME: {{.Values.model_service_v2.model_name}}
+  MODEL_NAME_V2: {{.Values.model_service_v2.model_name}}
