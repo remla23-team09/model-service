@@ -1,6 +1,6 @@
 model_service_v1:
-  service_image: ghcr.io/remla23-team09/model-service:0.1.4
+  image_tag: 0.1.4
   model_name: 'random_forest'
 model_service_v2:
-  service_image: ghcr.io/remla23-team09/model-service:0.1.4
+  image_tag: 0.1.4
   model_name: 'base_model'

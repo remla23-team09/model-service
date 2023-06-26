@@ -16,11 +16,7 @@ spec:
     spec:
       containers:
       - name: model-service-v1
-        image:
-          valueFrom:
-            configMapKeyRef:
-              name: model-service-v1-configmap
-              key: SERVICE_IMAGE
+        image: ghcr.io/remla23-team09/model-service:{{ .Values.model_service_v1.image_tag }}
         ports:
           - containerPort: 8080
         resources:
@@ -55,11 +51,7 @@ spec:
     spec:
       containers:
       - name: model-service-v2
-        image:
-          valueFrom:
-            configMapKeyRef:
-              name: model-service-v2-configmap
-              key: SERVICE_IMAGE
+        image: ghcr.io/remla23-team09/model-service:{{ .Values.model_service_v2.image_tag }}
         ports:
           - containerPort: 8080
         resources:
