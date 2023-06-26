@@ -23,10 +23,11 @@ load_model_time = Gauge("gauge_load_model_time", "Count the duration for loading
 
 model = None
 model_module = None
+model_name = None
 
 @app.before_first_request
 def load_model():
-    global model,model_module
+    global model,model_module, model_name
 
     model_name = os.environ.get('MODEL_NAME', 'base_model')  # Default to 'model1' if not specified
     model_module = importlib.import_module(f"models.{model_name}")
@@ -50,9 +51,9 @@ def load_model():
 @app.route('/predict', methods=['POST'])
 def predict():
     global happy_predictions, sad_predictions, time_individual, time_summary, size_of_input
-    global model
+    global model, model_name
 
-    app.logger.info("received request for random forest model...")
+    app.logger.info("received request for {}".format(model_name))
 
     # Process data
     start_time_processing = time.time()
@@ -76,6 +77,8 @@ def predict():
         "text": text
     }
 
+    app.logger.info("predicted sentiment: {}".format(res))
+    
     # Update counters
     if sentiment == 2:
         happy_predictions.inc()
