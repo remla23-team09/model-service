@@ -3,6 +3,6 @@ name: model-service-chart
 description: A Helm chart for model-service application
 
 type: application
-appVersion: "0.0.3"
+appVersion: "0.0.4"
 
-version: 0.0.4
+version: 0.0.5
