@@ -9,7 +9,7 @@ Contains the wrapper service for the ML model.
 To install the application as a helm chart, run the following command from the root directory of this repository:
 - `helm install <model-service-name> .\helm-chart\model-service-chart\`
 
-# Monitoring
+## Monitoring
 
 We have introduced 5 domain-specific metrics in our webapp:
 
